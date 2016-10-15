@@ -26,7 +26,7 @@ export const counts = (state = [], action = {}) => {
 
 // Site name reducer. Stores the "name" of the site which is displayed at the
 // top above the counters
-export const name = (state = 'Welcome to React', action = {}) => {
+export const name = (state = 'Mini Redux', action = {}) => {
   switch (action.type) {
   case 'SET_NAME':
     return action.payload;
