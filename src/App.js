@@ -2,19 +2,33 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+const count = (state, action) => {
+  console.log(action);
+  switch (action.type) {
+  case 'INCREMENT':
+    return state + 1;
+  case 'DECREMENT':
+    return (state < 1) ? state : state - 1;
+  default:
+    return state;
+  }
+};
+
 class Counter extends React.Component {
   state = { count: 0 };
 
-  increment = () => {
+  dispatch = (action) => {
     this.setState(state => ({
-      count: state.count + 1,
+      count: count(state.count, action),
     }));
   };
 
+  increment = () => {
+    this.dispatch({ type: 'INCREMENT' });
+  };
+
   decrement = () => {
-    this.setState(state => ({
-      count: state.count ? state.count - 1 : state.count,
-    }));
+    this.dispatch({ type: 'DECREMENT' });
   };
 
   render() {
