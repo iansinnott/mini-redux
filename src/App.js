@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-import { count, name } from './reducers.js'
+import { counts, name } from './reducers.js'
 
 /**
  * NOTE: This is different than the redux version but the idea is the same.
@@ -31,7 +31,7 @@ const combineReducers = (reducers) => {
   }
 };
 
-const reduce = combineReducers({ count, name });
+const reduce = combineReducers({ counts, name });
 
 const Counter = ({ index, count, dispatch }) => (
   <div className='Counter' data-index={index}>
@@ -87,7 +87,7 @@ class App extends Component {
           <h2>{this.state.name}</h2>
         </div>
         <NameBox dispatch={this.dispatch} name={this.state.name} />
-        {this.state.count.map((count, i) => (
+        {this.state.counts.map((count, i) => (
           <Counter key={i} index={i} dispatch={this.dispatch} count={count} />
         ))}
         <button

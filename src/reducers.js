@@ -1,5 +1,5 @@
 // Count reducer. Stores an array of counts.
-export const count = (state = [], action = {}) => {
+export const counts = (state = [], action = {}) => {
   const { type, payload: index } = action;
   let nextState;
   switch (type) {
