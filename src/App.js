@@ -2,49 +2,36 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-const count = (state = [], action = {}) => {
-  const { type, payload: index } = action;
-  let nextState;
-  switch (type) {
-  case 'INCREMENT':
-    nextState = state.slice();
-    nextState[index] = nextState[index] + 1;
+import { count, name } from './reducers.js'
+
+/**
+ * NOTE: This is different than the redux version but the idea is the same.
+ *
+ * The output ends up putting together something like this:
+ *
+ * ```
+ *     const reduce = (state = {}, action) => ({
+ *       count: count(state['count'], action),
+ *       name: name(state['name'], action),
+ *     });
+ * ```
+ */
+const combineReducers = (reducers) => {
+  const keys = Object.keys(reducers);
+
+  return function combination(state = {}, action) {
+    const nextState = {};
+
+    keys.forEach((k) => {
+      const reducer = reducers[k];
+      nextState[k] = reducer(state[k], action);
+    });
+
     return nextState;
-  case 'DECREMENT':
-    if (state[index] < 1) return state;
-    nextState = state.slice();
-    nextState[index] = nextState[index] - 1;
-    return nextState;
-  case 'ADD_COUNTER':
-    return state.concat([0]);
-  case 'REMOVE_COUNTER':
-    return [
-      ...state.slice(0, index),
-      ...state.slice(index + 1),
-    ];
-  default:
-    return state;
   }
 };
 
-const name = (state = 'Welcome to React', action = {}) => {
-  switch (action.type) {
-  case 'SET_NAME':
-    return action.payload;
-  default:
-    return state;
-  }
-};
-
-const initialState = {
-  count: count([0]), // Default to a single counter
-  name: name(),
-};
-
-const reduce = (state = initialState, action) => ({
-  count: count(state.count, action),
-  name: name(state.name, action),
-});
+const reduce = combineReducers({ count, name });
 
 const Counter = ({ index, count, dispatch }) => (
   <div className='Counter' data-index={index}>
@@ -80,6 +67,7 @@ class NameBox extends React.Component {
 class App extends Component {
   state = reduce();
 
+  // Dispatch implements a logger to imitate some sort of logger middleware.
   dispatch = (action) => {
     console.info(`DISPATCH: ${action.type}`, action.payload);
     this.setState(state => reduce(state, action), () => {
@@ -92,7 +80,6 @@ class App extends Component {
   };
 
   render() {
-    console.log(this.state);
     return (
       <div className="App">
         <div className="App-header">
