@@ -22,3 +22,56 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.Counter {
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.Counter:after {
+  content: attr(data-index);
+  color: #ddd;
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  font-size: 30px;
+  transform: translateY(-50%);
+}
+
+.removeButton {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  appearance: none;
+  background: transparent;
+  border: none;
+  color: #999;
+}
+
+.removeButton:hover {
+  color: red;
+}
+
+.NameBox {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.NameBox input {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ddd;
+  text-align: center;
+  color: #666;
+}
+.NameBox input:focus {
+  color: black;
+  border-color: cyan;
+  outline: none;
+}
