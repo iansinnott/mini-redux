@@ -31,8 +31,6 @@ const combineReducers = (reducers) => {
   }
 };
 
-const reduce = combineReducers({ counts, name });
-
 const Counter = ({ index, count, dispatch }) => (
   <div className='Counter' data-index={index}>
     <h1>{count}</h1>
@@ -59,6 +57,8 @@ const NameBox = ({ name, dispatch }) => (
     />
   </div>
 );
+
+const reduce = combineReducers({ counts, name });
 
 class App extends Component {
   state = reduce();
