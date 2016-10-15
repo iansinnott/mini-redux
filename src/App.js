@@ -46,23 +46,19 @@ const Counter = ({ index, count, dispatch }) => (
   </div>
 );
 
-class NameBox extends React.Component {
-  render() {
-    return (
-      <div className='NameBox'>
-        <input
-          type='text'
-          placeholder='Site Name...'
-          value={this.props.name}
-          onChange={e => this.props.dispatch({
-            type: 'SET_NAME',
-            payload: e.target.value,
-          })}
-        />
-      </div>
-    );
-  }
-}
+const NameBox = ({ name, dispatch }) => (
+  <div className='NameBox'>
+    <input
+      type='text'
+      placeholder='Site Name...'
+      value={name}
+      onChange={e => dispatch({
+        type: 'SET_NAME',
+        payload: e.target.value,
+      })}
+    />
+  </div>
+);
 
 class App extends Component {
   state = reduce();
