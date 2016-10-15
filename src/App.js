@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-const count = (state, action) => {
+const count = (state = 0, action = {}) => {
   console.log(action);
   switch (action.type) {
   case 'INCREMENT':
@@ -14,43 +14,70 @@ const count = (state, action) => {
   }
 };
 
-class Counter extends React.Component {
-  state = { count: 0 };
+const name = (state = 'Welcome to React', action = {}) => {
+  switch (action.type) {
+  case 'SET_NAME':
+    return action.payload;
+  default:
+    return state;
+  }
+};
 
-  dispatch = (action) => {
-    this.setState(state => ({
-      count: count(state.count, action),
-    }));
-  };
+const initialState = {
+  count: count(),
+  name: name(),
+};
 
-  increment = () => {
-    this.dispatch({ type: 'INCREMENT' });
-  };
+const reduce = (state = initialState, action) => ({
+  count: count(state.count, action),
+  name: name(state.name, action),
+});
 
-  decrement = () => {
-    this.dispatch({ type: 'DECREMENT' });
-  };
+const Counter = ({ count, dispatch }) => (
+  <div>
+    <h1>{count}</h1>
+    <button onClick={() => dispatch({ type: 'DECREMENT' })}>-</button>
+    <button onClick={() => dispatch({ type: 'INCREMENT' })}>+</button>
+  </div>
+);
 
+class NameBox extends React.Component {
   render() {
     return (
-      <div>
-        <h1>{this.state.count}</h1>
-        <button onClick={this.decrement}>-</button>
-        <button onClick={this.increment}>+</button>
+      <div style={{ marginTop: 40 }} className='NameBox'>
+        <label htmlFor='name'>Site Name:</label>
+        <input
+          type='text'
+          value={this.props.name}
+          onChange={e => this.props.dispatch({
+            type: 'SET_NAME',
+            payload: e.target.value,
+          })}
+        />
       </div>
     );
   }
 }
 
 class App extends Component {
+  state = reduce();
+
+  dispatch = (action) => {
+    console.info(`DISPATCH: ${action.type}`, action.payload);
+    this.setState(state => reduce(state, action), () => {
+      console.info('NEXT STATE:', this.state);
+    });
+  };
+
   render() {
     return (
       <div className="App">
         <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
+          <h2>{this.state.name}</h2>
         </div>
-        <Counter />
+        <Counter dispatch={this.dispatch} count={this.state.count} />
+        <NameBox dispatch={this.dispatch} name={this.state.name} />
       </div>
     );
   }
